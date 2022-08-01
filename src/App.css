@@ -1,7 +1,7 @@
 .app {
   background-color: #f3f2ef;
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* cheack this again*/
   align-items: center;
 }
 .app__body {
