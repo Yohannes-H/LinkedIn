@@ -1,5 +1,6 @@
 import React from "react";
 import "./Feed.css";
+import FlipMove from "react-flip-move";
 import CreateIcon from "@mui/icons-material/Create";
 import InputOption from "./InputOption";
 import ImageIcon from "@mui/icons-material/Image";
@@ -19,10 +20,12 @@ import {
 } from "firebase/firestore";
 import Post from "./Post";
 import { db } from "./firebase";
+import { useSelector } from "react-redux";
+import { selectUser } from "./features/userSlice";
 function Feed() {
   const [posts, setPosts] = React.useState([]);
   const [input, setInput] = React.useState("");
-
+  const user = useSelector(selectUser);
   React.useEffect(() => {
     // const unsubscribe = onSnapshot(
     //   collection(db, "posts"),
@@ -74,11 +77,11 @@ function Feed() {
   const sendPost = async (e) => {
     e.preventDefault();
     const docRef = await addDoc(collection(db, "posts"), {
-      name: "Johnny Dev",
+      name: user?.displayName || "unknown user",
       description: "this is a test description",
       flag: "true",
       message: input,
-      photoUrl: "",
+      photoUrl: user?.photoUrl || "",
       timestamp: serverTimestamp(),
     });
     console.log("Document written with ID: ", docRef.id);
@@ -89,6 +92,7 @@ function Feed() {
     //   message: "hi",
     // });
   };
+
   return (
     <div className="feed">
       <div className="feed__inputContainer">
@@ -119,16 +123,20 @@ function Feed() {
         </div>
       </div>
       {/*posts */}
-
-      {posts.map((post, index) => (
-        <Post
-          key={index}
-          name={post.name}
-          description={post.description}
-          message={post.message}
-          photoUrl={post.photoUrl}
-        />
-      ))}
+      <FlipMove>
+        {
+          //make sure the key attribute is unique or the animation won't work correctly
+        }
+        {posts.map((post, index) => (
+          <Post
+            key={index}
+            name={post.name}
+            description={post.description}
+            message={post.message}
+            photoUrl={post.photoUrl}
+          />
+        ))}
+      </FlipMove>
     </div>
   );
 }

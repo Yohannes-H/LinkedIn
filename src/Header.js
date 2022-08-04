@@ -7,7 +7,14 @@ import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import ChatIcon from "@mui/icons-material/Chat";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { logout, selectUser } from "./features/userSlice";
+import { signOut } from "firebase/auth";
+import { auth } from "./firebase";
 function Header() {
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
   return (
     <div className="header">
       <div className="header__left">
@@ -18,7 +25,7 @@ function Header() {
         <div className="header__search">
           {/* MUI icons for search */}
           <SearchIcon />
-          <input type="text" />
+          <input placeholder="search" type="text" />
         </div>
       </div>
       <div className="header__right">
@@ -28,10 +35,25 @@ function Header() {
         <HeaderOption Icon={BusinessCenterIcon} title="Jobs" />
         <HeaderOption Icon={ChatIcon} title="Messaging" />
         <HeaderOption Icon={NotificationsIcon} title="Notifications" />
-        <HeaderOption
-          avatar="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bWFsZSUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80"
-          title={"me"}
-        />
+        <HeaderOption avatar="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bWFsZSUyMHByb2ZpbGV8ZW58MHx8MHx8&w=1000&q=80" />
+        {user ? (
+          <span
+            onClick={() => {
+              signOut(auth)
+                .then(() => {
+                  dispatch(logout());
+                  console.log("user is logged out");
+                })
+                .catch((error) => {
+                  // An error happened.
+                });
+            }}
+          >
+            Logout
+          </span>
+        ) : (
+          <span></span> ///////////
+        )}
       </div>
     </div>
   );

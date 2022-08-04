@@ -1,7 +1,11 @@
 import { Avatar } from "@mui/material";
 import React from "react";
 import "./Sidebar.css";
+import { useSelector } from "react-redux";
+import { selectUser } from "./features/userSlice";
 function Sidebar() {
+  const user = useSelector(selectUser);
+
   const recentItem = (topic) => {
     return (
       <div className="sidebar__recentItem">
@@ -19,9 +23,14 @@ function Sidebar() {
           src="https://www.creativefabrica.com/wp-content/uploads/2020/03/08/Gradient-Rainbow-Background-Graphics-3304110-1.jpg"
           alt=""
         />
-        <Avatar className="sidebar__avatar" />
-        <h2>Johnny Dev</h2>
-        <h4> myemail56@gmail.com</h4>
+        <Avatar className="sidebar__avatar" src={user?.photoUrl}>
+          {user?.displayName[0]}
+          {
+            //shows the first letter of the user's name if photoUrl is not present
+          }
+        </Avatar>
+        <h2>{user?.displayName}</h2>
+        <h4> {user?.email}</h4>
       </div>
 
       {/* {sidebar stats} */}
