@@ -24,7 +24,9 @@ function Sidebar() {
           alt=""
         />
         <Avatar className="sidebar__avatar" src={user?.photoUrl}>
-          {user?.displayName[0]}
+          {
+            //   user?.displayName[0]
+          }
           {
             //shows the first letter of the user's name if photoUrl is not present
           }

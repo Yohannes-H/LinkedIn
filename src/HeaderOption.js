@@ -10,7 +10,9 @@ function HeaderOption({ avatar, Icon, title }) {
       {Icon && <Icon className="headerOption__icon" />}
       {avatar && (
         <Avatar className="headerOption__icon" src={user?.photoUrl}>
-          {user?.displayName[0]}
+          {
+            //user?.displayName[0]
+          }
         </Avatar>
       )}
       {!title ? (
