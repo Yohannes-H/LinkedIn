@@ -1,7 +1,7 @@
 import React from "react";
 import "./Login.css";
-import { useDispatch } from "react-redux";
-import { login } from "./features/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { login, selectUser } from "./features/userSlice";
 import { auth } from "./firebase.js";
 import {
   signInWithEmailAndPassword,
@@ -10,7 +10,7 @@ import {
 } from "firebase/auth";
 function Login() {
   const dispatch = useDispatch();
-
+  const user = useSelector(selectUser);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [name, setName] = React.useState("");
@@ -32,6 +32,7 @@ function Login() {
       });
   };
   const register = () => {
+    console.log("starting creating user");
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
@@ -65,6 +66,8 @@ function Login() {
         // ..
         console.log("error creating a user", errorCode, errorMessage);
       });
+
+    console.log("current redux state: ", user); //this will always be null
   };
 
   return (
